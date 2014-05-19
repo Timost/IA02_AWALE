@@ -36,7 +36,7 @@ choisirCaseDebut(J,CaseDebut,NewCaseDebut,NewJ):- %retourne la première case du
 
 
 
-choisirCaseFin(J,CaseFin,NewCaseFin,NewJ):- %retourne la case et le joueur précédent la case fin.
+choisirCaseFin(J,CaseFin,NewCaseFin,NewJ):- %retourne la case et le joueur précédant la case fin.
 	J=humain1,
 	CaseFin=1,
 	NewJ = humain2,
