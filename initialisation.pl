@@ -6,8 +6,8 @@ modeJeu(_):-%menu pour choisir le mode de jeu
 	read(Y),%mettre un point à la fin de l'input
 	Y>0,
 	Y<3,
-	commencer(Y),
-	!.
+	!,
+	commencer(Y).
 
 commencer(X):-%appel le prédicat de jeu correspondant au mode de Jeu choisi
 	X = 1,
