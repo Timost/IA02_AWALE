@@ -143,7 +143,7 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	prendreGraines(J,JoueurFin,CaseFin,New2PJ1,New2PJ2,New3PJ1,New3PJ2,0,NewGrainesRamasseesJ2),
 	NGRJ1 is GrainesRamasseesJ1,
 	NGRJ2 is NewGrainesRamasseesJ2+GrainesRamasseesJ2,
-	nl,write('Le joueur 1 prend : '),write(NGRJ2),write(' Graines.'),nl,
+	nl,write('Le joueur 2 prend : '),write(NGRJ2),write(' Graines.'),nl,
 	NPJ1 = New3PJ1,
 	NPJ2 = New3PJ2.
 
