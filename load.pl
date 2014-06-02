@@ -6,5 +6,5 @@
 :- include('verifications.pl').
 :- include('outils.pl').
 
-%:- initialization(partie(3)).
+:- initialization(partie(3)).
 

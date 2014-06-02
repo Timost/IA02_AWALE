@@ -10,7 +10,7 @@ partie(_):-
 
 	%initialisation bas de faits dynamique
 	asserta(joueurs(JD,JF)),
-	asserta(plateauJoueurs([5,5,4,4,0,1],[6,6,1,6,26,26])),
+	asserta(plateauJoueurs([4,4,4,4,4],[4,4,4,4,4,4])),
 	asserta(grainesRamasseesJoueurs(0,0)),
 	asserta(finJoueurs(0,0)),
 

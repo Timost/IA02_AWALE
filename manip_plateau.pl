@@ -68,13 +68,13 @@ donnerGraines(J,PJ1,PJ2,CaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ
 	ajouterGraine(PJ1,NewPJ1,CaseDebut,1),
 	choisirCaseDebut(J,CaseDebut,NewCaseDebut,NewJ),
 	NewStockGraines is StockGraines-1,
-	donnerGraines(NewJ,NewPJ1,PJ2,NewCaseDebut,NewStockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin).
+	donnerGraines(NewJ,NewPJ1,PJ2,NewCaseDebut,NewStockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin),!.
 
 donnerGraines(J,PJ1,PJ2,CaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin):-%gère les cas ou on a plus de 12 graines, on saute la case d'origine
 	J=JoueurDebut , 
 	CaseDebut =CaseOrigine,
 	choisirCaseDebut(J,CaseDebut,NewCaseDebut,NewJ),
-	donnerGraines(NewJ,PJ1,PJ2,NewCaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin).
+	donnerGraines(NewJ,PJ1,PJ2,NewCaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin),!.
 
 donnerGraines(J,PJ1,PJ2,CaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin):- %J indique sur quel plateau commencer la distribution
 	J=humain2,
@@ -82,18 +82,27 @@ donnerGraines(J,PJ1,PJ2,CaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ
 	ajouterGraine(PJ2,NewPJ2,CaseDebut,1),
 	choisirCaseDebut(J,CaseDebut,NewCaseDebut,NewJ),
 	NewStockGraines is StockGraines-1,
-	donnerGraines(NewJ,PJ1,NewPJ2,NewCaseDebut,NewStockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin).
+	donnerGraines(NewJ,PJ1,NewPJ2,NewCaseDebut,NewStockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin),!.
 
 prendreGraines(JoueurTour,JoueurTour,CaseDebut,PJ1,PJ2,PJ1,PJ2,NbGrainesRamassees,NbGrainesRamassees).%condition d'arrêt si on arrive sur le plateau du joueur qui joue
 
 prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamassees,TotalGrainesRamassees):- %condition d'arrêt si on ne peut pas prendre les graines
-	different(JoueurTour,JoueurDebut),
+	JoueurTour=humain1,%joueur à qui c'est le tour
+	JoueurDebut=humain2,%plateau du joueur où les graines sont à PrendreGraines
 	indexL(PJ2,CaseDebut,NbGrainesCases),%cherche le nombre de graines dans la case
 	((NbGrainesCases=<1);(NbGrainesCases>=4)),
 	NPJ1 = PJ1,
 	NPJ2 = PJ2,
 	TotalGrainesRamassees is NbGrainesRamassees.
-	
+
+prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamassees,TotalGrainesRamassees):- %condition d'arrêt si on ne peut pas prendre les graines
+	JoueurTour=humain2,%joueur à qui c'est le tour
+	JoueurDebut=humain1,%plateau du joueur où les graines sont à PrendreGraines	
+	indexL(PJ1,CaseDebut,NbGrainesCases),%cherche le nombre de graines dans la case
+	((NbGrainesCases=<1);(NbGrainesCases>=4)),
+	NPJ1 = PJ1,
+	NPJ2 = PJ2,
+	TotalGrainesRamassees is NbGrainesRamassees.
 
 prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamassees,TotalGrainesRamassees):- %ramasses les graines si besoin, on ne peut rammasser des graines que dans le camp adverse et si il y'a deux ou trois graines
 	JoueurTour=humain1,%joueur à qui c'est le tour
@@ -106,7 +115,7 @@ prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamas
 	choisirCaseFin(JoueurDebut,CaseDebut, NewCaseDebut, NewJoueurDebut),%recule d'une case
 	prendreGraines(JoueurTour,NewJoueurDebut,NewCaseDebut,PJ1,NewPJ2,NPJ1,NPJ2,NewNbGrainesRamassees,TotalGrainesRamassees). %appel récursif
 
-prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamassees):- %ramasses les graines si besoin, on ne peut rammasser des graines que dans le camp adverse et si il y'a deux ou trois graines
+prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamassees,TotalGrainesRamassees):- %ramasses les graines si besoin, on ne peut rammasser des graines que dans le camp adverse et si il y'a deux ou trois graines
 	JoueurTour=humain2,%joueur à qui c'est le tour
 	JoueurDebut=humain1,%plateau du joueur où les graines sont à PrendreGraines
 	indexL(PJ1,CaseDebut,NbGrainesCases),%cherche le nombre de graines dans la case
@@ -132,6 +141,14 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	nl,write('Le joueur 1 prend : '),write(NewGrainesRamasseesJ1),write(' Graines.'),nl,
 	NPJ1 = New3PJ1,
 	NPJ2 = New3PJ2.
+
+/*repartirGraines(humain2,[5,5,4,4,0,1],[6,6,1,6,15,15],5,X,Y,0,0,Z,W).
+indexL([6,6,1,6,15,15],5,X).
+enleverGraine([6,6,1,6,15,15],NewPJ2, 5, 15).
+choisirCaseDebut(humain2,5,NewCaseDebut,NewJ).
+donnerGraines(humain2,[5,5,4,4,0,1], [6,6,1,6,0,15], 6,15, 5, humain2,New2PJ1,New2PJ2,CaseFin,JoueurFin)
+prendreGraines(humain2,humain1,3,[7,7,6,5,1,2],[7,7,2,7,0,17],New3PJ1,New3PJ2,0,NewGrainesRamasseesJ2)
+*/
 
 repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2):- %reparti les graines a partir de la position CaseDebut du plateau du joueur 1
 	J = humain2,
