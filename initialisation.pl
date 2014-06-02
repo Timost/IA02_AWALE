@@ -1,22 +1,138 @@
-modeJeu(_):-%menu pour choisir le mode de jeu
+partie(_):-
+	%netoyage base de faits dynamique
+	retractall(joueurs(_,_)),
+	retractall(plateauJoueurs(_,_)),
+	retractall(grainesRamasseesJoueurs(_,_)),
+	retractall(finJoueurs(_,_)),
+
+	choixModeJeu(X),
+	choixJoueurDebut(X, JD, JF),%JD=Joueur qui joue, JF= joueur qui ne joue pas à ce tour.
+
+	%initialisation bas de faits dynamique
+	asserta(joueurs(JD,JF)),
+	asserta(plateauJoueurs([5,5,4,4,0,1],[6,6,1,6,26,26])),
+	asserta(grainesRamasseesJoueurs(0,0)),
+	asserta(finJoueurs(0,0)),
+
+	jouer(X).
+
+choixModeJeu(Z):-%menu pour choisir le mode de jeu
 	repeat,
 	write('Entrez le mode de jeu : '),nl,
-	write('1. 2 joueurs'),nl,
-	write('2. 1 joueur'), nl,
+	write('1. 1 joueur'),nl,
+	write('2. 2 joueurs'), nl,
 	read(Y),%mettre un point à la fin de l'input
 	Y>0,
 	Y<3,
 	!,
-	commencer(Y).
+	(
+		(
+			Y is 1,
+			nl,
+			write('Vous etes en mode 1 joueur.'),
+			nl
+		)
+		;
+		(
+			Y is 2,
+			nl,
+			write('Vous etes en mode 2 joueurs.'),
+			nl
+		)
+	),
+	Z is Y.
 
-commencer(X):-%appel le prédicat de jeu correspondant au mode de Jeu choisi
-	X = 1,
-    nl,
-	write('Vous etes en mode : 2 joueurs. Le joueur 1 commence.'),
-	tourPlateau(humain1,humain2,[4,4,4,4,4,4],[4,4,4,4,4,4],0,0,0,0).
+choixJoueurDebut(X,JD,JF):-
+	X=2,
+	repeat,
+	nl,
+	write('Entrez le numéro du joueur qui commence : '),nl,
+	write('1. joueur1'),nl,
+	write('2. joueur2'), nl,
+	read(Y),%
+	Y>0,
+	Y<3,
+	!,
+	(
+		(
+			Y is 1,
+			JD = humain1,
+			JF = humain2
+		)
+		;
+		(
+			Y is 2,
+			JD = humain2,
+			JF = humain1
+		)
+	).
 
-commencer(X):-
-	X = 2,
-    nl,
-	write('Vous etes en mode : 1 joueur.'),
-	tourPlateau(humain,ordinateur,[4,4,4,4,4,4],[4,4,4,4,4,4],0,0,0,0). 	
+choixJoueurDebut(X,JD,JF):-
+	X=1,
+	repeat,
+	nl,
+	write('Entrez le numéro du joueur qui commence : '),nl,
+	write('1. joueur1'),nl,
+	write('2. ordinateur'), nl,
+	read(Y),%
+	Y>0,
+	Y<3,
+	!,
+	(
+		(
+			Y is 1,
+			JD = humain1,
+			JF = ordinateur
+		)
+		;
+		(
+			Y is 2,
+			JD = ordinateur,
+			JF = humain1
+		)
+	).
+
+
+jouer(X):-%appel le prédicat de jeu correspondant au mode de Jeu choisi
+	repeat,
+	%récupère les valeurs dans la base de faits dynamiques
+	joueurs(JD,JF),
+	plateauJoueurs(PJ1,PJ2),
+	grainesRamasseesJoueurs(GRJ1,GRJ2),
+	finJoueurs(FJ1,FJ2),
+
+	%joue le tour du joueur JD
+
+	/*write(JD),nl,
+	write(JF),nl,
+	write(PJ1),nl,
+	write(PJ1),nl,
+	write(PJ2),nl,
+	write(GRJ1),nl,
+	write(GRJ2),nl,
+	write(FJ1),nl,
+	write(FJ2),nl,*/
+	
+
+
+	tourPlateau(JD,JF,PJ1,PJ2,FJ1,FJ2,GRJ1,GRJ2),
+	!.
+
+init(A):-
+	retractall(valeur1(_)),
+	asserta(valeur1(A)),
+	test(1).
+
+test(1):-
+	repeat,
+	valeur1(A),
+	test1(A),nl,!.
+	
+test1(0).
+test1(X):- 
+	write(X),
+	nl,
+	retract(valeur1(_)),
+	Z is X-1,
+	asserta(valeur1(Z)),
+	fail.

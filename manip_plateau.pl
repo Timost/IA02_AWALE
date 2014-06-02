@@ -129,7 +129,7 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	prendreGraines(J,JoueurFin,CaseFin,New2PJ1,New2PJ2,New3PJ1,New3PJ2,0,NewGrainesRamasseesJ1),
 	NGRJ1 is NewGrainesRamasseesJ1+GrainesRamasseesJ1,
 	NGRJ2 is GrainesRamasseesJ2,
-	nl,write('Le joueur 1 prend : '),write(NGRJ1),write(' Graines.'),nl,
+	nl,write('Le joueur 1 prend : '),write(NewGrainesRamasseesJ1),write(' Graines.'),nl,
 	NPJ1 = New3PJ1,
 	NPJ2 = New3PJ2.
 
@@ -143,7 +143,7 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	prendreGraines(J,JoueurFin,CaseFin,New2PJ1,New2PJ2,New3PJ1,New3PJ2,0,NewGrainesRamasseesJ2),
 	NGRJ1 is GrainesRamasseesJ1,
 	NGRJ2 is NewGrainesRamasseesJ2+GrainesRamasseesJ2,
-	nl,write('Le joueur 2 prend : '),write(NGRJ2),write(' Graines.'),nl,
+	nl,write('Le joueur 2 prend : '),write(NewGrainesRamasseesJ2),write(' Graines.'),nl,
 	NPJ1 = New3PJ1,
 	NPJ2 = New3PJ2.
 
@@ -185,7 +185,19 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 	choisirCase(PJ1,X),
 	repartirGraines(humain1,PJ1,PJ2,X,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2),
 	%afficherPlateau(NPJ1,NPJ2),
-	tourPlateau(humain2,humain1,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
+	%tourPlateau(humain2,humain1,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
+
+	retractall(joueurs(_,_)),
+	retractall(plateauJoueurs(_,_)),
+	retractall(grainesRamasseesJoueurs(_,_)),
+	retractall(finJoueurs(_,_)),
+
+	asserta(joueurs(humain2,humain1)),
+	asserta(plateauJoueurs(NPJ1,NPJ2)),
+	asserta(grainesRamasseesJoueurs(NGRJ1,NGRJ2)),
+	asserta(finJoueurs(0,0)),
+
+	!,fail.
 
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs humain, tour du joueur 1, J1 contient le joueur qui joue1
 	PJ1Fin<1,
@@ -196,7 +208,19 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 	choisirCase(PJ2,X),
 	repartirGraines(humain2,PJ1,PJ2,X,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2),
 	%afficherPlateau(NPJ1,NPJ2),
-	tourPlateau(humain1,humain2,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
+	%tourPlateau(humain1,humain2,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
+
+	retractall(joueurs(_,_)),
+	retractall(plateauJoueurs(_,_)),
+	retractall(grainesRamasseesJoueurs(_,_)),
+	retractall(finJoueurs(_,_)),
+
+	asserta(joueurs(humain1,humain2)),
+	asserta(plateauJoueurs(NPJ1,NPJ2)),
+	asserta(grainesRamasseesJoueurs(NGRJ1,NGRJ2)),
+	asserta(finJoueurs(0,0)),
+
+	!,fail.
 	
 tourPlateau(J1,J2,PJ1,PJ2,Case,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs ordinateur
 	J1 = humain,
