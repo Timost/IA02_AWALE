@@ -10,7 +10,7 @@ partie(_):-
 
 	%initialisation bas de faits dynamique
 	asserta(joueurs(JD,JF)),
-	asserta(plateauJoueurs([4,4,4,4,4],[4,4,4,4,4,4])),
+	asserta(plateauJoueurs([4,4,4,4,4,4],[4,4,4,4,4,4])),
 	asserta(grainesRamasseesJoueurs(0,0)),
 	asserta(finJoueurs(0,0)),
 
@@ -118,21 +118,3 @@ jouer(X):-%appel le prédicat de jeu correspondant au mode de Jeu choisi
 	tourPlateau(JD,JF,PJ1,PJ2,FJ1,FJ2,GRJ1,GRJ2),
 	!.
 
-init(A):-
-	retractall(valeur1(_)),
-	asserta(valeur1(A)),
-	test(1).
-
-test(1):-
-	repeat,
-	valeur1(A),
-	test1(A),nl,!.
-	
-test1(0).
-test1(X):- 
-	write(X),
-	nl,
-	retract(valeur1(_)),
-	Z is X-1,
-	asserta(valeur1(Z)),
-	fail.

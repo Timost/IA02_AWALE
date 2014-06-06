@@ -1,14 +1,15 @@
 afficherPlateau(PJ1,PJ2) :- %affiche la disposition du plateau
 	nl,
-	write('Case :      6 5 4 3 2 1'),nl,
-	write('Joueur 2 : '),
-	reverse(PJ2,NewPJ2,[]),
-	write(NewPJ2),
-	nl,
+	format('           * %2d * %2d * %2d * %2d * %2d * %2d *',[6,5,4,3,2,1]),nl,
+	write('            -----------------------------'),nl,
+	 write('Joueur 2 : '),
+	 reverse(PJ2,NewPJ2,[]),
+	format('|%3d |%3d |%3d |%3d |%3d |%3d |',NewPJ2),nl,
+	write('           |-----------------------------|'),nl,
 	write('Joueur 1 : '),
-	write(PJ1),nl,
-	write('Case :      1 2 3 4 5 6'),nl,
-	nl.
+	format('|%3d |%3d |%3d |%3d |%3d |%3d |',PJ1),nl,
+	write('            -----------------------------'),nl,
+	format('           * %2d * %2d * %2d * %2d * %2d * %2d *',[1,2,3,4,5,6]),nl.
 
 choisirCase(PJ,X) :-
 	repeat,
