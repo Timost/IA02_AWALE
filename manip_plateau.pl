@@ -128,9 +128,9 @@ prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamas
 	prendreGraines(JoueurTour,NewJoueurDebut,NewCaseDebut,NewPJ1,PJ2,NPJ1,NPJ2,NewNbGrainesRamassees,TotalGrainesRamassees). %appel récursif
 
 
-
 repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2):- %reparti les graines a partir de la position CaseDebut du plateau du joueur 1
 	J = humain1,
+	\+listeNulle(PJ1),
 	indexL(PJ1,CaseDebut,NbGraines),
 	enleverGraine(PJ1,NewPJ1, CaseDebut, NbGraines),
 	choisirCaseDebut(J,CaseDebut,NewCaseDebut,NewJ),
@@ -143,16 +143,9 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	NPJ1 = New3PJ1,
 	NPJ2 = New3PJ2.
 
-/*repartirGraines(humain2,[5,5,4,4,0,1],[6,6,1,6,15,15],5,X,Y,0,0,Z,W).
-indexL([6,6,1,6,15,15],5,X).
-enleverGraine([6,6,1,6,15,15],NewPJ2, 5, 15).
-choisirCaseDebut(humain2,5,NewCaseDebut,NewJ).
-donnerGraines(humain2,[5,5,4,4,0,1], [6,6,1,6,0,15], 6,15, 5, humain2,New2PJ1,New2PJ2,CaseFin,JoueurFin)
-prendreGraines(humain2,humain1,3,[7,7,6,5,1,2],[7,7,2,7,0,17],New3PJ1,New3PJ2,0,NewGrainesRamasseesJ2)
-*/
-
 repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2):- %reparti les graines a partir de la position CaseDebut du plateau du joueur 1
 	J = humain2,
+	\+listeNulle(PJ2),
 	indexL(PJ2,CaseDebut,NbGraines),
 	enleverGraine(PJ2,NewPJ2, CaseDebut, NbGraines),
 	choisirCaseDebut(J,CaseDebut,NewCaseDebut,NewJ),
@@ -241,6 +234,7 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 	!,fail.
 	
 tourPlateau(J1,J2,PJ1,PJ2,Case,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs ordinateur
-	J1 = humain,
-	J2 = ordinateur.
-	
+	PJ1Fin<1,
+	PJ2Fin<1,
+	J1 = ordinateur,
+	J2= humain1.
