@@ -1,5 +1,13 @@
 %%%%%%% Prédicats outils %%%%%%%%%
+affame(_) :- % il doit retourner vrai si le plateau du joueur qui ne joue pas est vide
 
+plateauNonJoueur(P) % ce prédicat doit renvoyer le plateau du joueur qui ne joue pas
+
+plateauJoueur(P) % ce prédicat doit retourner le plateau du joueur qui joue
+
+nourritAdversaire(Case) % ce prédicat retourne vrai si la case permet de nourrir l'nourrir l'nourritAdversaire
+
+peutNourrirAdversaire(_) % retourne vrai s'il existe une case qui nourrit l'adversaire
 
 listeNulle([0]):-!.
 listeNulle([0|X]):-listeNulle(X).
