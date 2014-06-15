@@ -1,4 +1,18 @@
 %%%%%%% Prédicats de Vérifications %%%%%%%%%
+plateauVide(_):-
+	joueurs(J,NJ),
+	plateauJoueurs(PJ1,PJ2),
+	J=joueur1,
+	listeNulle(PJ1).
+
+plateauVide(_):-
+	joueurs(J,NJ),
+	plateauJoueurs(PJ1,PJ2),
+	J=joueur2,
+	listeNulle(PJ2).
+
+listeNulle([0]).
+listeNulle([0|Q]):-listeNulle(Q).
 
 caseValide(A):-
 	A=<0,
