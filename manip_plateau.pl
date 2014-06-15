@@ -130,7 +130,6 @@ prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamas
 
 
 repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2):- %reparti les graines a partir de la position CaseDebut du plateau du joueur 1
-	\+plateauVide(_),
 	J = humain1,
 	indexL(PJ1,CaseDebut,NbGraines),
 	enleverGraine(PJ1,NewPJ1, CaseDebut, NbGraines),
@@ -153,7 +152,6 @@ prendreGraines(humain2,humain1,3,[7,7,6,5,1,2],[7,7,2,7,0,17],New3PJ1,New3PJ2,0,
 */
 
 repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2):- %reparti les graines a partir de la position CaseDebut du plateau du joueur 1
-	\+plateauVide(_),
 	J = humain2,
 	indexL(PJ2,CaseDebut,NbGraines),
 	enleverGraine(PJ2,NewPJ2, CaseDebut, NbGraines),
@@ -170,19 +168,13 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 
 
 
-tourPlateau(_,_,_,_,_,1,_,_):-%si le joueur 1 gagne
+tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2):-%si le joueur 1 gagne
 	nl,
 	write('Le joueur 2 gagne la partie'),nl.
 
 tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%si le Joueur 2 gagne
 	nl,
-	write('Le joueur 1 gagne la partie'),nl.
-
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%condition d'arrêt si égalité
-	GrainesRamasseesJ1=24,
-	GrainesRamasseesJ2=24,
-	nl,
-	write('Egalite'),nl.
+	write('Le joueur 2 gagne la partie'),nl.
 
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%condition d'arrêt si il reste moins de 6 graines
 	GrainesRamasseesJ1+GrainesRamasseesJ2>=48-6,
