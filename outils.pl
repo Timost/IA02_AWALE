@@ -11,7 +11,7 @@ size([_|T],S):-%retourne la taille d'une liste
 indexL([X|_],1,X).
 indexL([_|L],I,A):- %ndexL(L,I,A) met dans A l'élément de la liste à l'index I
 	I>0,
-	longueur(L,Si),
+	size(L,Si),
 	I=<Si+1, 
 	I1 is I-1, 
 	indexL(L,I1,A).
