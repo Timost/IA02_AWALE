@@ -1,13 +1,6 @@
 %%%%%%% Prédicats outils %%%%%%%%%
-affame(_) :- % il doit retourner vrai si le plateau du joueur qui ne joue pas est vide
-
-plateauNonJoueur(P) % ce prédicat doit renvoyer le plateau du joueur qui ne joue pas
-
-plateauJoueur(P) % ce prédicat doit retourner le plateau du joueur qui joue
-
-nourritAdversaire(Case) % ce prédicat retourne vrai si la case permet de nourrir l'nourrir l'nourritAdversaire
-
-peutNourrirAdversaire(_) % retourne vrai s'il existe une case qui nourrit l'adversaire
+list_adder([ ],0).
+list_adder([X|L],Sum) :- list_adder(L,SL), Sum is X + SL.
 
 listeNulle([0]):-!.
 listeNulle([0|X]):-listeNulle(X).

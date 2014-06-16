@@ -1,4 +1,74 @@
 %%%%%%% Prédicats de Vérifications %%%%%%%%%
+
+affame(_) :- % il doit retourner vrai si le plateau du joueur qui ne joue pas est vide
+	plateauNonJoueur(PNJ),
+	listeNulle(PNJ).
+
+plateauNonJoueur(P) :-% ce prédicat doit renvoyer le plateau du joueur qui ne joue pas
+	joueurs(JD,JF),
+	plateauJoueurs(PJD,PJF),
+	JD = humain1,
+	P = PJF.
+
+plateauNonJoueur(P) :-% ce prédicat doit renvoyer le plateau du joueur qui ne joue pas
+	joueurs(JD,JF),
+	plateauJoueurs(PJD,PJF),
+	JD = humain2,
+	P = PJD.
+
+plateauDuJoueur(P) :- % ce prédicat doit retourner le plateau du joueur qui joue
+	%initialisation bas de faits dynamique
+	joueurs(JD,JF),
+	plateauJoueurs(PJD,PJF),
+	JD = humain1,
+	P = PJD.
+
+plateauDuJoueur(P) :- % ce prédicat doit retourner le plateau du joueur qui joue
+	%initialisation bas de faits dynamique
+	joueurs(JD,JF),
+	plateauJoueurs(PJD,PJF),
+	JD = humain2,
+	P = PJF.
+nourritAdversaire(Case):- % ce prédicat retourne vrai si la case permet de nourrir l'nourrir l'nourritAdversaire
+	plateauDuJoueur(PJ),
+	indexL(PJ,Case,X),
+	!,Case+X>6.
+
+peutNourrirAdversaire(_):- % retourne vrai s'il existe une case qui nourrit l'adversaire
+	nourritAdversaire(1);
+	nourritAdversaire(2);
+	nourritAdversaire(3);
+	nourritAdversaire(4);
+	nourritAdversaire(5);
+	nourritAdversaire(6).
+
+
+prendreToutPlateau(J):- % ramasse l'ensemble des graines du plateau et les donnes au joueur J
+	J=humain1,
+	plateauDuJoueur(PJ),
+	grainesRamasseesJoueurs(GJ1,GJ2),
+	list_adder(PJ,Graines),
+	NewGJ1 is GJ1 + Graines,
+
+	retractall(plateauJoueurs(_,_)),
+	retractall(grainesRamasseesJoueurs(_,_)),
+
+	asserta(plateauJoueurs([0,0,0,0,0,0],[0,0,0,0,0,0])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
+	asserta(grainesRamasseesJoueurs(NewGJ1,GJ2)).
+
+prendreToutPlateau(J):- % ramasse l'ensemble des graines du plateau et les donnes au joueur J
+	J=humain2,
+	plateauDuJoueur(PJ),
+	grainesRamasseesJoueurs(GJ1,GJ2),
+	list_adder(PJ,Graines),
+	NewGJ2 is GJ2 + Graines,
+
+	retractall(plateauJoueurs(_,_)),
+	retractall(grainesRamasseesJoueurs(_,_)),
+
+	asserta(plateauJoueurs([0,0,0,0,0,0],[0,0,0,0,0,0])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
+	asserta(grainesRamasseesJoueurs(GJ1,NewGJ2)).
+
 plateauVide(_):-
 	joueurs(J,NJ),
 	plateauJoueurs(PJ1,PJ2),
@@ -37,3 +107,10 @@ verifierCase(PJ,X) :-
 	X>0,%vérifie si l'index est valide
 	X<7,
 	caseRemplie(PJ,X).%vérifie si la case n'est pas vide.
+
+	/*
+	si affame(adversaire)
+		alors si peutNourrirAdversaire
+			alors nourrirAdversaire(case)
+		sinon le joueur capture les graines restante
+	*/
