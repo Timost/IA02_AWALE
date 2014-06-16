@@ -7,28 +7,28 @@ affame(_) :- % il doit retourner vrai si le plateau du joueur qui ne joue pas es
 	listeNulle(PNJ).
 
 plateauNonJoueur(P) :-% ce prédicat doit renvoyer le plateau du joueur qui ne joue pas
-	joueurs(JD,JF),
-	plateauJoueurs(PJD,PJF),
+	joueurs(JD,_),
+	plateauJoueurs(_,PJF),
 	JD = humain1,
 	P = PJF.
 
 plateauNonJoueur(P) :-% ce prédicat doit renvoyer le plateau du joueur qui ne joue pas
-	joueurs(JD,JF),
-	plateauJoueurs(PJD,PJF),
+	joueurs(JD,_),
+	plateauJoueurs(PJD,_),
 	JD = humain2,
 	P = PJD.
 
 plateauDuJoueur(P) :- % ce prédicat doit retourner le plateau du joueur qui joue
 	%initialisation bas de faits dynamique
-	joueurs(JD,JF),
-	plateauJoueurs(PJD,PJF),
+	joueurs(JD,_),
+	plateauJoueurs(PJD,_),
 	JD = humain1,
 	P = PJD.
 
 plateauDuJoueur(P) :- % ce prédicat doit retourner le plateau du joueur qui joue
 	%initialisation bas de faits dynamique
-	joueurs(JD,JF),
-	plateauJoueurs(PJD,PJF),
+	joueurs(JD,_),
+	plateauJoueurs(_,PJF),
 	JD = humain2,
 	P = PJF.
 nourritAdversaire(Case):- % ce prédicat retourne vrai si la case permet de nourrir l'nourrir l'nourritAdversaire
@@ -56,7 +56,12 @@ prendreToutPlateau(J):- % ramasse l'ensemble des graines du plateau et les donne
 	retractall(grainesRamasseesJoueurs(_,_)),
 
 	asserta(plateauJoueurs([0,0,0,0,0,0],[0,0,0,0,0,0])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
-	asserta(grainesRamasseesJoueurs(NewGJ1,GJ2)).
+	asserta(grainesRamasseesJoueurs(NewGJ1,GJ2)),
+	joueurs(J1,J2),
+	plateauJoueurs(PJ1,PJ2),
+	finJoueurs(PJ1Fin,PJ2Fin),
+	grainesRamasseesJoueurs(GrainesRamasseesJ1,GrainesRamasseesJ2),
+	tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
 prendreToutPlateau(J):- % ramasse l'ensemble des graines du plateau et les donnes au joueur J
 	J=humain2,
@@ -69,22 +74,26 @@ prendreToutPlateau(J):- % ramasse l'ensemble des graines du plateau et les donne
 	retractall(grainesRamasseesJoueurs(_,_)),
 
 	asserta(plateauJoueurs([0,0,0,0,0,0],[0,0,0,0,0,0])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
-	asserta(grainesRamasseesJoueurs(GJ1,NewGJ2)).
+	asserta(grainesRamasseesJoueurs(GJ1,NewGJ2)),
+
+	joueurs(J1,J2),
+	plateauJoueurs(PJ1,PJ2),
+	finJoueurs(PJ1Fin,PJ2Fin),
+	grainesRamasseesJoueurs(GrainesRamasseesJ1,GrainesRamasseesJ2),
+	tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
 plateauVide(_):-
-	joueurs(J,NJ),
-	plateauJoueurs(PJ1,PJ2),
+	joueurs(J,_),
+	plateauJoueurs(PJ1,_),
 	J=joueur1,
 	listeNulle(PJ1).
 
 plateauVide(_):-
-	joueurs(J,NJ),
-	plateauJoueurs(PJ1,PJ2),
+	joueurs(J,_),
+	plateauJoueurs(_,PJ2),
 	J=joueur2,
 	listeNulle(PJ2).
 
-listeNulle([0]).
-listeNulle([0|Q]):-listeNulle(Q).
 
 caseValide(A):-
 	A=<0,
@@ -120,7 +129,7 @@ verifierCase(PJ,X) :-
 	caseRemplie(PJ,X),%vérifie si la case n'est pas vide.
 	affame(_),!,
 	\+peutNourrirAdversaire(_),
-	joueur(J1,J2),
+	joueur(J1,_),
 	prendreToutPlateau(J1).
 
 verifierCase(PJ,X) :-

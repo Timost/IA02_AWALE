@@ -134,7 +134,7 @@ choixJoueurDebut(X,JD,JF):-
 	.
 
 
-jouer(X):-%appel le prédicat de jeu correspondant au mode de Jeu choisi
+jouer(_):-%appel le prédicat de jeu correspondant au mode de Jeu choisi
 	repeat,
 	%récupère les valeurs dans la base de faits dynamiques
 	joueurs(JD,JF),

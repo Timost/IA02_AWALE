@@ -86,7 +86,7 @@ choisirCaseFin(J,CaseFin,NewCaseFin,NewJ):-
 	NewCaseFin is CaseFin-1.
 
 
-donnerGraines(J,PJ1,PJ2,CaseDebut,0,CaseOrigine, JoueurDebut,PJ1,PJ2,Y,Joueur):-
+donnerGraines(J,PJ1,PJ2,CaseDebut,0,_, _,PJ1,PJ2,Y,Joueur):-
 	choisirCaseFin(J,CaseDebut, Y, Joueur).
 	%nl,write(Y),nl,write(Joueur).
 	
@@ -114,7 +114,7 @@ donnerGraines(J,PJ1,PJ2,CaseDebut,StockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ
 	NewStockGraines is StockGraines-1,
 	donnerGraines(NewJ,PJ1,NewPJ2,NewCaseDebut,NewStockGraines,CaseOrigine, JoueurDebut,NPJ1,NPJ2,CaseFin,JoueurFin),!.
 
-prendreGraines(JoueurTour,JoueurTour,CaseDebut,PJ1,PJ2,PJ1,PJ2,NbGrainesRamassees,NbGrainesRamassees).%condition d'arrêt si on arrive sur le plateau du joueur qui joue
+prendreGraines(JoueurTour,JoueurTour,_,PJ1,PJ2,PJ1,PJ2,NbGrainesRamassees,NbGrainesRamassees).%condition d'arrêt si on arrive sur le plateau du joueur qui joue
 
 prendreGraines(JoueurTour,JoueurDebut,CaseDebut,PJ1,PJ2,NPJ1,NPJ2,NbGrainesRamassees,TotalGrainesRamassees):- %condition d'arrêt si on ne peut pas prendre les graines
 	JoueurTour=humain1,%joueur à qui c'est le tour
@@ -220,40 +220,40 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 
 
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2):- %si le joueur 1 gagne
+tourPlateau(_,_,_,_,1,_,GrainesRamasseesJ1,_):- %si le joueur 1 gagne
 	nl,
-	write('Le joueur 1 gagne la partie avec le nombre graines suivant :'),write(GrainesRamasseesJ2),nl,afficherPlateau(_).
-tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):- %si le Joueur 2 gagne
+	write('Le joueur 1 gagne la partie avec le nombre de graines suivant :'),write(GrainesRamasseesJ1),nl,afficherPlateau(_).
+tourPlateau(_,_,_,_,_,1,_,GrainesRamasseesJ2):- %si le Joueur 2 gagne
 	nl,
-	write('Le joueur 2 gagne la partie avec le nombre graines suivant :'),write(GrainesRamasseesJ1),nl,afficherPlateau(_).
+	write('Le joueur 2 gagne la partie avec le nombre de graines suivant :'),write(GrainesRamasseesJ2),nl,afficherPlateau(_).
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%condition d'arrêt si il reste moins de 6 graines
+tourPlateau(J1,J2,PJ1,PJ2,_,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%condition d'arrêt si il reste moins de 6 graines
 	GrainesRamasseesJ1+GrainesRamasseesJ2>=48-6,
 	GrainesRamasseesJ1>GrainesRamasseesJ2,
 	nl,
 	write('Il reste moins de 6 graines.'),nl,
 	tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-
+tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,_,GrainesRamasseesJ1,GrainesRamasseesJ2):-
 	GrainesRamasseesJ1+GrainesRamasseesJ2>=48-6,
 	GrainesRamasseesJ2>GrainesRamasseesJ1,
 	nl,
 	write('Il reste moins de 6 graines.'),nl,
 	tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2).
 	
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-% le joueur 1 gagne la partie
+tourPlateau(J1,J2,PJ1,PJ2,_,_,GrainesRamasseesJ1,GrainesRamasseesJ2):-% le joueur 1 gagne la partie
 	GrainesRamasseesJ1 >= 25,
 	nl,
 	write('Le joueur 1 a plus de 25 graines'),nl,
-	tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2).
+	tourPlateau(J1,J2,PJ1,PJ2,1,0,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-% le joueur 2 gagne la partie
+tourPlateau(J1,J2,PJ1,PJ2,_,_,GrainesRamasseesJ1,GrainesRamasseesJ2):-% le joueur 2 gagne la partie
 	GrainesRamasseesJ2 >= 25,
 	nl,
 	write('Le joueur 2 a plus de 25 graines'),nl,
-	tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2).
+	tourPlateau(J1,J2,PJ1,PJ2,0,1,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs humain, tour du joueur 1, J1 contient le joueur qui joue1
+tourPlateau(J1,_,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs humain, tour du joueur 1, J1 contient le joueur qui joue1
 	PJ1Fin<1,
 	PJ2Fin<1,
 	J1 = humain1,
@@ -287,7 +287,7 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 
 	!,fail.
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs humain, tour du joueur 1, J1 contient le joueur qui joue1
+tourPlateau(J1,_,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs humain, tour du joueur 1, J1 contient le joueur qui joue1
 	PJ1Fin<1,
 	PJ2Fin<1,
 	J1 = humain2,
