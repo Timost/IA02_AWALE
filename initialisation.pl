@@ -10,11 +10,10 @@ partie(_):-
 
 	%initialisation bas de faits dynamique
 	asserta(joueurs(JD,JF)),
-	asserta(plateauJoueurs([0,0,0,0,0,0],[4,4,4,4,4,4])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
+	asserta(plateauJoueurs([4,4,4,4,4,4],[0,0,0,0,0,0])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
 	asserta(grainesRamasseesJoueurs(0,0)),
-	asserta(finJoueurs(0,0)).
-
-	%%jouer(X).
+	asserta(finJoueurs(0,0)),
+	jouer(X).
 
 choixModeJeu(Z):-%menu pour choisir le mode de jeu
 	repeat,

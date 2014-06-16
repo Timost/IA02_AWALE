@@ -1,5 +1,4 @@
 %%%%%%% Prédicats de Vérifications %%%%%%%%%
-
 affame(_) :- % il doit retourner vrai si le plateau du joueur qui ne joue pas est vide
 	plateauNonJoueur(PNJ),
 	listeNulle(PNJ).
@@ -106,8 +105,27 @@ verifierCase(PJ,X) :-
 	%nonvar(X),%vérifie si X est lié
 	X>0,%vérifie si l'index est valide
 	X<7,
-	caseRemplie(PJ,X).%vérifie si la case n'est pas vide.
+	caseRemplie(PJ,X),%vérifie si la case n'est pas vide.
+	affame(_),!,
+	peutNourrirAdversaire(_),
+	nourritAdversaire(X).
 
+verifierCase(PJ,X) :-
+	%nonvar(X),%vérifie si X est lié
+	X>0,%vérifie si l'index est valide
+	X<7,
+	caseRemplie(PJ,X),%vérifie si la case n'est pas vide.
+	affame(_),!,
+	\+peutNourrirAdversaire(_),
+	joueur(J1,J2),
+	prendreToutPlateau(J1).
+
+verifierCase(PJ,X) :-
+	%nonvar(X),%vérifie si X est lié
+	X>0,%vérifie si l'index est valide
+	X<7,
+	caseRemplie(PJ,X),%vérifie si la case n'est pas vide.
+	\+affame(_).
 	/*
 	si affame(adversaire)
 		alors si peutNourrirAdversaire
