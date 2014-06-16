@@ -1,4 +1,7 @@
 %%%%%%% Prédicats de Vérifications %%%%%%%%%
+
+
+
 affame(_) :- % il doit retourner vrai si le plateau du joueur qui ne joue pas est vide
 	plateauNonJoueur(PNJ),
 	listeNulle(PNJ).

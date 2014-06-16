@@ -137,11 +137,26 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	donnerGraines(NewJ,NewPJ1, PJ2, NewCaseDebut,NbGraines, CaseDebut, J,New2PJ1,New2PJ2,CaseFin,JoueurFin),
 	%afficherPlateau(New2PJ1,New2PJ2),
 	prendreGraines(J,JoueurFin,CaseFin,New2PJ1,New2PJ2,New3PJ1,New3PJ2,0,NewGrainesRamasseesJ1),
-	NGRJ1 is NewGrainesRamasseesJ1+GrainesRamasseesJ1,
-	NGRJ2 is GrainesRamasseesJ2,
-	nl,write('Le joueur 1 prend : '),write(NewGrainesRamasseesJ1),write(' Graines.'),nl,
-	NPJ1 = New3PJ1,
-	NPJ2 = New3PJ2.
+	(
+		(
+			listeNulle(New3PJ2),
+			nl,write('Vous ne pouvez pas affamer le joueur 2'),
+			NPJ1 =New2PJ1,
+			NPJ2 =New2PJ2,
+			NGRJ1 is GrainesRamasseesJ1,
+			NGRJ2 is GrainesRamasseesJ2
+		)
+		;
+		(
+			\+	listeNulle(New3PJ2),
+			NGRJ1 is NewGrainesRamasseesJ1+GrainesRamasseesJ1,
+			NGRJ2 is GrainesRamasseesJ2,
+			nl,write('Le joueur 1 prend : '),write(NewGrainesRamasseesJ1),write(' Graines.'),nl,
+			NPJ1 = New3PJ1,
+			NPJ2 = New3PJ2
+		)
+	)
+	.
 
 repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2):- %reparti les graines a partir de la position CaseDebut du plateau du joueur 1
 	J = humain2,
@@ -152,11 +167,26 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 	donnerGraines(NewJ,PJ1, NewPJ2, NewCaseDebut,NbGraines, CaseDebut, J,New2PJ1,New2PJ2,CaseFin,JoueurFin),
 	%afficherPlateau(New2PJ1,New2PJ2),
 	prendreGraines(J,JoueurFin,CaseFin,New2PJ1,New2PJ2,New3PJ1,New3PJ2,0,NewGrainesRamasseesJ2),
-	NGRJ1 is GrainesRamasseesJ1,
-	NGRJ2 is NewGrainesRamasseesJ2+GrainesRamasseesJ2,
-	nl,write('Le joueur 2 prend : '),write(NewGrainesRamasseesJ2),write(' Graines.'),nl,
-	NPJ1 = New3PJ1,
-	NPJ2 = New3PJ2.
+	(
+		(
+			listeNulle(New3PJ1),
+			nl,write('Vous ne pouvez pas affamer le joueur 1'),
+			NPJ1 =New2PJ1,
+			NPJ2 =New2PJ2,
+			NGRJ1 is GrainesRamasseesJ1,
+			NGRJ2 is GrainesRamasseesJ2
+		)
+		;
+		(
+			\+	listeNulle(New3PJ1),
+			NGRJ1 is GrainesRamasseesJ1,
+			NGRJ2 is NewGrainesRamasseesJ2+GrainesRamasseesJ2,
+			nl,write('Le joueur 2 prend : '),write(NewGrainesRamasseesJ2),write(' Graines.'),nl,
+			NPJ1 = New3PJ1,
+			NPJ2 = New3PJ2
+		)
+	).
+	
 
 
 

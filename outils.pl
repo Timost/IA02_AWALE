@@ -1,4 +1,6 @@
 %%%%%%% Prédicats outils %%%%%%%%%
+
+
 list_adder([ ],0).
 list_adder([X|L],Sum) :- list_adder(L,SL), Sum is X + SL.
 
