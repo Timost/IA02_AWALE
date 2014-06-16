@@ -11,6 +11,21 @@ afficherPlateau(PJ1,PJ2) :- %affiche la disposition du plateau
 	write('            -----------------------------'),nl,
 	format('           * %2d * %2d * %2d * %2d * %2d * %2d *',[1,2,3,4,5,6]),nl.
 
+choisirCaseOrdi(PJ,1):-
+	verifierCase(PJ,1),!.
+choisirCaseOrdi(PJ,2):-
+	verifierCase(PJ,2),!.
+choisirCaseOrdi(PJ,3):-
+	verifierCase(PJ,3),!.
+choisirCaseOrdi(PJ,4):-
+	verifierCase(PJ,4),!.
+choisirCaseOrdi(PJ,5):-
+	verifierCase(PJ,5),!.
+choisirCaseOrdi(PJ,6):-
+	verifierCase(PJ,6),!.
+
+
+
 choisirCase(PJ,X) :-
 	repeat,
 	write('Entrez le numero de la case (entre 1 et 6): '),
@@ -223,7 +238,17 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 	J1 = humain1,
 	afficherPlateau(PJ1,PJ2),
 	nl, write('Au joueur 1 de jouer :'), nl,
-	choisirCase(PJ1,X),
+	(
+		(
+			ordinateur("true",_),
+			choisirCaseOrdi(PJ1,X)
+		)
+		;
+		(
+			ordinateur("false",_),
+			choisirCase(PJ1,X)
+		)
+	),
 	repartirGraines(humain1,PJ1,PJ2,X,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2),
 	%afficherPlateau(NPJ1,NPJ2),
 	%tourPlateau(humain2,humain1,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
@@ -246,7 +271,17 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 	J1 = humain2,
 	afficherPlateau(PJ1,PJ2),
 	nl, write('Au joueur 2 de jouer :'), nl,
-	choisirCase(PJ2,X),
+	(
+		(
+			ordinateur(_,"true"),
+			choisirCaseOrdi(PJ2,X)
+		)
+		;
+		(
+			ordinateur(_,"false"),
+			choisirCase(PJ2,X)
+		)
+	),
 	repartirGraines(humain2,PJ1,PJ2,X,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2),
 	%afficherPlateau(NPJ1,NPJ2),
 	%tourPlateau(humain1,humain2,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
@@ -263,8 +298,8 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 
 	!,fail.
 	
-tourPlateau(J1,J2,PJ1,PJ2,Case,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs ordinateur
+/*tourPlateau(J1,J2,PJ1,PJ2,Case,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs ordinateur
 	PJ1Fin<1,
 	PJ2Fin<1,
 	J1 = ordinateur,
-	J2= humain1.
+	J2= humain1.*/
