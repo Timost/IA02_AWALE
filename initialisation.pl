@@ -11,47 +11,20 @@ partie(_):-
 
 	%initialisation bas de faits dynamique
 	asserta(joueurs(JD,JF)),
-	setOrdinateur(_),
-	asserta(plateauJoueurs([4,4,4,4,4,4],[1,1,1,0,0,0])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
+	asserta(plateauJoueurs([4,4,4,4,4,4],[4,4,4,4,4,4])),%[0,0,0,0,0,0],[4,4,4,4,4,4]
 	asserta(grainesRamasseesJoueurs(0,0)),
 	asserta(finJoueurs(0,0)),
 	jouer(X).
-
-setOrdinateur(_):- %minitialise correctement le prédicat ordinateur de la base de faits dynamique.
-	joueurs(JD,JF),
-	(JF=humain2;JF=humain1),
-	(JD=humain1;JD=humain2),
-	retractall(ordinateur(_,_)),
-	asserta(ordinateur("false","false")).
-
-setOrdinateur(_):- %minitialise correctement le prédicat ordinateur de la base de faits dynamique.
-	joueurs(JD,JF),
-	(JF=humain2;JF=humain1),
-	(JD=ordinateur1;JD=ordinateur2),
-	retractall(ordinateur(_,_)),
-	asserta(ordinateur("true","false")).
-setOrdinateur(_):- %minitialise correctement le prédicat ordinateur de la base de faits dynamique.
-	joueurs(JD,JF),
-	(JD=humain2;JD=humain1),
-	(JF=ordinateur1;JF=ordinateur2),
-	retractall(ordinateur(_,_)),
-	asserta(ordinateur("false","true")).
-
-setOrdinateur(_):- %minitialise correctement le prédicat ordinateur de la base de faits dynamique.
-	joueurs(JD,JF),
-	(JF=ordinateur2;JF=ordinateur1),
-	(JD=ordinateur2;JD=ordinateur1),
-	retractall(ordinateur(_,_)),
-	asserta(ordinateur("true","true")).
 
 choixModeJeu(Z):-%menu pour choisir le mode de jeu
 	repeat,
 	write('Entrez le mode de jeu : '),nl,
 	write('1. 1 joueur'),nl,
 	write('2. 2 joueurs'), nl,
+	write('3. ordi vs. ordi'), nl,
 	read(Y),%mettre un point à la fin de l'input
 	Y>0,
-	Y<3,
+	Y<4,
 	!,
 	(
 		(
@@ -67,9 +40,42 @@ choixModeJeu(Z):-%menu pour choisir le mode de jeu
 			write('Vous etes en mode 2 joueurs.'),
 			nl
 		)
+		;
+		(
+			Y is 3,
+			nl,
+			write('Vous etes en mode ordinateur vs. ordinateur.'),
+			nl
+		)
 	),
 	Z is Y.
 
+choixJoueurDebut(X,JD,JF):-
+	X=3,
+	repeat,
+	nl,
+	write('Entrez le numéro du joueur qui commence : '),nl,
+	write('1. ordi1'),nl,
+	write('2. ordi2'), nl,
+	read(Y),%
+	Y>0,
+	Y<3,
+	!,
+	(
+		(
+			Y is 1,
+			JD = humain1,
+			JF = humain2
+		)
+		;
+		(
+			Y is 2,
+			JD = humain1,
+			JF = humain2
+		)
+	),
+	retractall(ordinateur(_,_)),
+	asserta(ordinateur("true","true")).
 choixJoueurDebut(X,JD,JF):-
 	X=2,
 	repeat,
@@ -93,7 +99,9 @@ choixJoueurDebut(X,JD,JF):-
 			JD = humain2,
 			JF = humain1
 		)
-	).
+	),
+	retractall(ordinateur(_,_)),
+	asserta(ordinateur("false","false")).
 
 choixJoueurDebut(X,JD,JF):-
 	X=1,
@@ -110,15 +118,20 @@ choixJoueurDebut(X,JD,JF):-
 		(
 			Y is 1,
 			JD = humain1,
-			JF = ordinateur1
+			JF = humain2,
+			retractall(ordinateur(_,_)),
+			asserta(ordinateur("false","true"))
 		)
 		;
 		(
 			Y is 2,
-			JD = ordinateur1,
-			JF = humain1
+			JD = humain2,
+			JF = humain1,
+			retractall(ordinateur(_,_)),
+			asserta(ordinateur("true","false"))
 		)
-	).
+	)
+	.
 
 
 jouer(X):-%appel le prédicat de jeu correspondant au mode de Jeu choisi

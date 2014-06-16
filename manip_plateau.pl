@@ -1,5 +1,11 @@
-afficherPlateau(PJ1,PJ2) :- %affiche la disposition du plateau
+afficherPlateau(_):-
+	plateauJoueurs(PJ1,PJ2),
+	grainesRamasseesJoueurs(G1,G2),
+	afficherPlateau(PJ1,PJ2,G1,G2).
+
+afficherPlateau(PJ1,PJ2,G1,G2) :- %affiche la disposition du plateau
 	nl,
+	write('Joueur 2 : '),write(G2),write(' graines'),nl,
 	format('           * %2d * %2d * %2d * %2d * %2d * %2d *',[6,5,4,3,2,1]),nl,
 	write('            -----------------------------'),nl,
 	 write('Joueur 2 : '),
@@ -9,7 +15,8 @@ afficherPlateau(PJ1,PJ2) :- %affiche la disposition du plateau
 	write('Joueur 1 : '),
 	format('|%3d |%3d |%3d |%3d |%3d |%3d |',PJ1),nl,
 	write('            -----------------------------'),nl,
-	format('           * %2d * %2d * %2d * %2d * %2d * %2d *',[1,2,3,4,5,6]),nl.
+	format('           * %2d * %2d * %2d * %2d * %2d * %2d *',[1,2,3,4,5,6]),nl,
+	write('Joueur 1 : '),write(G1),write(' graines'),nl.
 
 choisirCaseOrdi(PJ,1):-
 	verifierCase(PJ,1),!.
@@ -24,7 +31,14 @@ choisirCaseOrdi(PJ,5):-
 choisirCaseOrdi(PJ,6):-
 	verifierCase(PJ,6),!.
 
-
+choisirCaseOrdi2(PJ,X):-
+	repeat,
+	randomize,
+	random(Double),
+	NewDouble is Double*6,
+	Integer is floor(NewDouble)+1,
+	verifierCase(PJ,Integer),!,
+	X is Integer.
 
 choisirCase(PJ,X) :-
 	repeat,
@@ -206,49 +220,57 @@ repartirGraines(J,PJ1,PJ2,CaseDebut,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamassee
 
 
 
-tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2):-%si le joueur 1 gagne
+tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2):- %si le joueur 1 gagne
 	nl,
-	write('Le joueur 2 gagne la partie'),nl.
-
-tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%si le Joueur 2 gagne
+	write('Le joueur 1 gagne la partie avec le nombre graines suivant :'),write(GrainesRamasseesJ2),nl,afficherPlateau(_).
+tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):- %si le Joueur 2 gagne
 	nl,
-	write('Le joueur 2 gagne la partie'),nl.
+	write('Le joueur 2 gagne la partie avec le nombre graines suivant :'),write(GrainesRamasseesJ1),nl,afficherPlateau(_).
 
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-%condition d'arrêt si il reste moins de 6 graines
 	GrainesRamasseesJ1+GrainesRamasseesJ2>=48-6,
 	GrainesRamasseesJ1>GrainesRamasseesJ2,
+	nl,
+	write('Il reste moins de 6 graines.'),nl,
 	tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-
 	GrainesRamasseesJ1+GrainesRamasseesJ2>=48-6,
 	GrainesRamasseesJ2>GrainesRamasseesJ1,
+	nl,
+	write('Il reste moins de 6 graines.'),nl,
 	tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2).
 	
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-% le joueur 1 gagne la partie
 	GrainesRamasseesJ1 >= 25,
+	nl,
+	write('Le joueur 1 a plus de 25 graines'),nl,
 	tourPlateau(J1,J2,PJ1,PJ2,1,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2):-% le joueur 2 gagne la partie
 	GrainesRamasseesJ2 >= 25,
+	nl,
+	write('Le joueur 2 a plus de 25 graines'),nl,
 	tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,1,GrainesRamasseesJ1,GrainesRamasseesJ2).
 
 tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :- %tour de jeu pour une partie humain vs humain, tour du joueur 1, J1 contient le joueur qui joue1
 	PJ1Fin<1,
 	PJ2Fin<1,
 	J1 = humain1,
-	afficherPlateau(PJ1,PJ2),
+	afficherPlateau(_),
 	nl, write('Au joueur 1 de jouer :'), nl,
 	(
 		(
 			ordinateur("true",_),
-			choisirCaseOrdi(PJ1,X)
+			choisirCaseOrdi2(PJ1,X)
 		)
 		;
 		(
 			ordinateur("false",_),
 			choisirCase(PJ1,X)
 		)
-	),
+	),nl,
+	write('Le joueur 1 choisit la case : '),write(X),nl,
 	repartirGraines(humain1,PJ1,PJ2,X,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2),
 	%afficherPlateau(NPJ1,NPJ2),
 	%tourPlateau(humain2,humain1,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).
@@ -269,19 +291,20 @@ tourPlateau(J1,J2,PJ1,PJ2,PJ1Fin,PJ2Fin,GrainesRamasseesJ1,GrainesRamasseesJ2) :
 	PJ1Fin<1,
 	PJ2Fin<1,
 	J1 = humain2,
-	afficherPlateau(PJ1,PJ2),
+	afficherPlateau(_),
 	nl, write('Au joueur 2 de jouer :'), nl,
 	(
 		(
 			ordinateur(_,"true"),
-			choisirCaseOrdi(PJ2,X)
+			choisirCaseOrdi2(PJ2,X)
 		)
 		;
 		(
 			ordinateur(_,"false"),
 			choisirCase(PJ2,X)
 		)
-	),
+	),nl,
+	write('Le joueur 2 choisit la case : '),write(X),nl,
 	repartirGraines(humain2,PJ1,PJ2,X,NPJ1,NPJ2,GrainesRamasseesJ1,GrainesRamasseesJ2,NGRJ1,NGRJ2),
 	%afficherPlateau(NPJ1,NPJ2),
 	%tourPlateau(humain1,humain2,NPJ1,NPJ2,0,0,NGRJ1,NGRJ2).

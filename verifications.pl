@@ -88,16 +88,16 @@ listeNulle([0|Q]):-listeNulle(Q).
 
 caseValide(A):-
 	A=<0,
-	nl,
-	write('case vide'),
-	nl,
+	%nl,
+	%write('case vide'),
+	%nl,
 	fail.
 
 caseValide(A):-
-	A>0,
-	nl,
-	write('case remplie'),
-	nl.
+	A>0.
+	%nl,
+	%write('case remplie'),
+	%nl.
 
 caseRemplie(PJ,X):-%retourne vrai si la case à l'indice X dans la liste PJ est remplie.
 	indexL(PJ,X,A),
